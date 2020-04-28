@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/layout/Navbar";
@@ -6,6 +6,7 @@ import Users from "./components/users/Users";
 import Search from "./components/users/Search";
 import Alert from "./components/layout/Alert";
 import axios from "axios";
+import About from "./components/pages/About";
 
 class App extends React.Component {
   state = {
@@ -40,19 +41,32 @@ class App extends React.Component {
   render() {
     const { users, loading, alert } = this.state;
     return (
-      <div className='App'>
-        <Navbar />
-        <div className='container'>
-          <Alert alert={alert} />
-          <Search
-            searchUsers={this.searchUsers}
-            clearUsers={this.clearUsers}
-            showClear={users.length > 0 ? true : false}
-            setAlert={this.setAlert}
-          />
-          <Users loading={loading} users={users} />
+      <Router>
+        <div className='App'>
+          <Navbar />
+          <div className='container'>
+            <Alert alert={alert} />
+            <Switch>
+              <Route
+                exact
+                path='/'
+                render={() => (
+                  <Fragment>
+                    <Search
+                      searchUsers={this.searchUsers}
+                      clearUsers={this.clearUsers}
+                      showClear={users.length > 0 ? true : false}
+                      setAlert={this.setAlert}
+                    />
+                    <Users loading={loading} users={users} />
+                  </Fragment>
+                )}
+              />
+              <Route exact path='/about' component={About} />
+            </Switch>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }

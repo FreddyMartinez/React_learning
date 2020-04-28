@@ -12,7 +12,7 @@ export class Search extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    if (this.state.text == "") {
+    if (this.state.text === "") {
       this.props.setAlert("You should write a name", "light");
     } else {
       this.props.searchUsers(this.state.text);
