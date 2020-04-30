@@ -1,27 +1,22 @@
 import React, { Fragment } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
+import axios from "axios";
 import Navbar from "./components/layout/Navbar";
 import Users from "./components/users/Users";
+import User from "./components/users/User";
 import Search from "./components/users/Search";
 import Alert from "./components/layout/Alert";
-import axios from "axios";
 import About from "./components/pages/About";
 
 class App extends React.Component {
   state = {
     users: [],
+    user: {},
+    repos: [],
     loading: false,
     alert: null,
   };
-
-  // async componentDidMount() {
-  //   this.setState({loading: true});
-  //   const res = await axios.get(
-  //     `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
-  //   );
-  //   this.setState({users: res.data, loading: false});
-  // }
 
   searchUsers = async user => {
     this.setState({ loading: true });
@@ -29,6 +24,22 @@ class App extends React.Component {
       `https://api.github.com/search/users?q=${user}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
     );
     this.setState({ users: res.data.items, loading: false });
+  };
+
+  getSingleUser = async userName => {
+    this.setState({ loading: true });
+    const res = await axios.get(
+      `https://api.github.com/users/${userName}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    );
+    this.setState({ user: res.data, loading: false });
+  };
+
+  getUserRepos = async userName => {
+    this.setState({ loading: true });
+    const res = await axios.get(
+      `https://api.github.com/users/${userName}/repos?per_page=5&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+    );
+    this.setState({ repos: res.data, loading: false });
   };
 
   clearUsers = () => this.setState({ users: [] });
@@ -39,7 +50,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { users, loading, alert } = this.state;
+    const { users, user, repos, loading, alert } = this.state;
     return (
       <Router>
         <div className='App'>
@@ -63,6 +74,19 @@ class App extends React.Component {
                 )}
               />
               <Route exact path='/about' component={About} />
+              <Route
+                exact
+                path='/user/:login'
+                render={props => (
+                  <User
+                    {...props}
+                    getUser={this.getSingleUser}
+                    user={user}
+                    getUserRepos={this.getUserRepos}
+                    repos={repos}
+                  />
+                )}
+              />
             </Switch>
           </div>
         </div>
