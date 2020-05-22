@@ -1,3 +1,7 @@
+### GitHub Finder
+
+This project uses the Github API. It was created to understand the syntax, structure and flow of information within an application built with React.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
