@@ -8,6 +8,10 @@ app.get("", (req, res) => {
   res.json({ msg: "Welcome to the Contact Keeper" });
 });
 
+app.use("/api/users", require("./routes/users"));
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/contacts", require("./routes/contacts"));
+
 app.listen(PORT, () => {
   console.log(`listening in port ${PORT}`);
 });
