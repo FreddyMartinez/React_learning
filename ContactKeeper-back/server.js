@@ -7,6 +7,9 @@ const PORT = process.env.PORT | "5000";
 //Connect Mongo DB
 connectDB();
 
+//Init middleware
+app.use(express.json({ extended: false }));
+
 //Default
 app.get("", (req, res) => {
   res.json({ msg: "Welcome to the Contact Keeper" });
