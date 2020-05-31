@@ -11,7 +11,7 @@ function App() {
     <ContactState>
       <Router>
         <Fragment>
-          <Navbar title="Contact Keeper" />
+          <Navbar />
           <div className="container">
             <Switch>
               <Route exact path="/" component={Home} />

@@ -13,22 +13,24 @@ import {
 } from "../types";
 
 const ContactState = props => {
-  const initialState = [
-    {
-      id: 1,
-      name: "Pepito Perez",
-      email: "hbes@db",
-      phone: "23543",
-      type: "professional"
-    },
-    {
-      id: 2,
-      name: "Sara Conor",
-      email: "hbes@db",
-      phone: "23543",
-      type: "professional"
-    }
-  ];
+  const initialState = {
+    contacts: [
+      {
+        id: 1,
+        name: "Pepito Perez",
+        email: "pepe@mail",
+        phone: "23543",
+        type: "professional"
+      },
+      {
+        id: 2,
+        name: "Sara Conor",
+        email: "sara@terminator",
+        phone: "123456",
+        type: "personal"
+      }
+    ]
+  };
 
   const [state, dispatch] = useReducer(contactReducer, initialState);
 
