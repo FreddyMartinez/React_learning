@@ -346,6 +346,11 @@ table th {
   background: var(--light-color);
 }
 
+.form-container {
+  max-width: 500px;
+  margin: auto;
+}
+
 /* Navbar */
 .navbar {
   display: flex;
