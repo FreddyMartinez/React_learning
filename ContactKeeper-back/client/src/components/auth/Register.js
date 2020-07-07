@@ -1,6 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import AuthContext from "../../context/auth/AuthContext";
+import AlertContext from "../../context/alert/AlertContext";
 
-const Register = () => {
+const Register = props => {
+  const authContext = useContext(AuthContext);
+  const alertContext = useContext(AlertContext);
+
+  const { register, error, clearErrors, isAuthenticated } = authContext;
+  const { setAlert } = alertContext;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push("/");
+    }
+
+    if (error !== null) {
+      setAlert(error, "danger");
+      clearErrors();
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, props.history]);
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -13,8 +33,17 @@ const Register = () => {
 
   const onSubmit = e => {
     e.preventDefault();
-    console.log("Form submited");
-    console.log(user);
+    if (name === "" || email === "" || password === "") {
+      setAlert("All fields are required", "danger");
+    } else if (password !== passwordConf) {
+      setAlert("Passwords must match", "danger");
+    } else {
+      register({
+        name,
+        email,
+        password
+      });
+    }
   };
 
   return (
@@ -31,6 +60,7 @@ const Register = () => {
             name="name"
             value={name}
             onChange={onChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -41,6 +71,7 @@ const Register = () => {
             name="email"
             value={email}
             onChange={onChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -51,6 +82,8 @@ const Register = () => {
             name="password"
             value={password}
             onChange={onChange}
+            minLength="6"
+            required
           />
         </div>
         <div className="form-group">
@@ -61,6 +94,8 @@ const Register = () => {
             name="passwordConf"
             value={passwordConf}
             onChange={onChange}
+            minLength="6"
+            required
           />
         </div>
         <input

@@ -52,5 +52,7 @@ export default (state, action) => {
         ...state,
         filtered: null
       };
+    default:
+      return { ...state };
   }
 };
