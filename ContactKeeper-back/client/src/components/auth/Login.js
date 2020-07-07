@@ -1,6 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import AuthContext from "../../context/auth/AuthContext";
+import AlertContext from "../../context/alert/AlertContext";
 
-const Login = () => {
+const Login = props => {
+  const authContext = useContext(AuthContext);
+  const alertContext = useContext(AlertContext);
+
+  const { login, error, clearErrors, isAuthenticated } = authContext;
+  const { setAlert } = alertContext;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push("/");
+    }
+
+    if (error !== null) {
+      setAlert(error, "danger");
+      clearErrors();
+    }
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, props.history]);
+
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -11,8 +31,15 @@ const Login = () => {
 
   const onSubmit = e => {
     e.preventDefault();
-    console.log("Login form submited");
-    console.log(user);
+
+    if (email === "" || password === "") {
+      setAlert("All fields are required", "danger");
+    } else {
+      login({
+        email,
+        password
+      });
+    }
   };
 
   return (
@@ -29,6 +56,7 @@ const Login = () => {
             name="email"
             value={email}
             onChange={onChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -39,6 +67,7 @@ const Login = () => {
             name="password"
             value={password}
             onChange={onChange}
+            required
           />
         </div>
         <input

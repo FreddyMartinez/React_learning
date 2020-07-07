@@ -1,5 +1,4 @@
 import React, { useReducer } from "react";
-import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import setAuthToken from "../../utils/setAuthToken";
 import AuthContext from "./AuthContext";
@@ -67,7 +66,28 @@ const AuthState = props => {
   };
 
   // Login
-  const login = () => console.log("load");
+  const login = async formData => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    try {
+      const res = await axios.post("/api/auth", formData, config);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data
+      });
+
+      loadUser();
+    } catch (error) {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: error.response.data.msg
+      });
+    }
+  };
 
   // Logout
   const logout = () => console.log("load");
