@@ -14,7 +14,7 @@ const Login = props => {
       props.history.push("/");
     }
 
-    if (error !== null) {
+    if (error) {
       setAlert(error, "danger");
       clearErrors();
     }
