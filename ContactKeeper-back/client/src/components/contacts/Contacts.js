@@ -8,6 +8,7 @@ const Contacts = () => {
   const contactContext = useContext(ContactContext);
 
   const { contacts, filtered, getContacts, loading } = contactContext;
+  const nullRef = React.useRef(null);
 
   useEffect(() => {
     getContacts();
@@ -28,6 +29,7 @@ const Contacts = () => {
                   key={contact._id}
                   timeout={500}
                   classNames="item"
+                  nodeRef={nullRef}
                 >
                   <ContactItem contact={contact} />
                 </CSSTransition>
@@ -37,6 +39,7 @@ const Contacts = () => {
                   key={contact._id}
                   timeout={500}
                   classNames="item"
+                  nodeRef={nullRef}
                 >
                   <ContactItem contact={contact} />
                 </CSSTransition>
